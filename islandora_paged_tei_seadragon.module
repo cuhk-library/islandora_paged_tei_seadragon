@@ -1,0 +1,54 @@
+<?php
+
+/**
+ * @file
+ * An Islandora viewer for paged content with a TEI datastream.
+ */
+
+/**
+ * Implements hook_islandora_viewer_info().
+ */
+function islandora_paged_tei_seadragon_islandora_viewer_info() {
+  return array(
+    'islandora_paged_tei_seadragon' => array(
+      'label' => t('Paged Content TEI OpenSeadragon viewer'),
+      'description' => t('Two pained viewer with rendered TEI on one side and
+        page images on the other.'),
+      'callback' => 'islandora_paged_tei_seadragon_callback',
+      'model' => array(
+        'islandora:manuscriptCModel',
+      ),
+    ),
+  );
+}
+
+/**
+ * Callback function for the viewer.
+ *
+ * @param array $params
+ *   An array of parameters to pass to islandora_paged_tei_seadragon_viewer.
+ *
+ * @return string
+ *   HTML string for the viewer.
+ */
+function islandora_paged_tei_seadragon_callback(array $params) {
+  return theme('islandora_paged_tei_seadragon_viewer', $params);
+}
+
+/**
+ * Implements hook_theme().
+ */
+function islandora_paged_tei_seadragon_theme() {
+  // Solution packs using this as a viewer need to set these variables.
+  return array(
+    'islandora_paged_tei_seadragon_viewer' => array(
+      'file' => 'theme/theme.inc',
+      'template' => 'theme/islandora-paged-tei-seadragon-viewer',
+      'variables' => array(
+        'object' => NULL,
+        'transform_object' => NULL,
+        'pages' => array(),
+      ),
+    ),
+  );
+}

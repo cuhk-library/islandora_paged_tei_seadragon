@@ -1,0 +1,9 @@
+/**
+ * @file
+ * CSS for the TEI/seadragon viewer.
+ */
+.viewer-tei-pane,
+.viewer-image-pane {
+  max-width: 50%;
+  display: inline-block;
+}
