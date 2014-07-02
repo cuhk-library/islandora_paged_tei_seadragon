@@ -2,8 +2,18 @@
  * @file
  * CSS for the TEI/seadragon viewer.
  */
-.viewer-tei-pane,
-.viewer-image-pane {
+.paged-tei-seadragon-viewer-pane {
   max-width: 50%;
   display: inline-block;
+  vertical-align: top;
+}
+#paged-tei-seadragon-viewer-seadragon-pane {
+  width: 50%;
+}
+.paged-tei-seadragon-viewer-left-toolbar,
+.paged-tei-seadragon-viewer-right-toolbar {
+  display: inline-block;
+}
+.paged-tei-seadragon-viewer-right-toolbar {
+  float: right;
 }

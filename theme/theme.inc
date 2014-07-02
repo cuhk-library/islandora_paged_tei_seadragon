@@ -22,6 +22,8 @@ function islandora_paged_tei_seadragon_preprocess_islandora_paged_tei_seadragon_
   }
   $token = islandora_get_object_token($page_pid, 'JP2', 2);
 
+  $variables['pager'] = 'pager';
+  $variables['clipper'] = 'clipper';
   $variables['tei'] = islandora_paged_tei_seadragon_do_transform($manuscript, $transform);
   $variables['seadragon'] = theme(
     'islandora_openseadragon_viewer',
@@ -34,4 +36,5 @@ function islandora_paged_tei_seadragon_preprocess_islandora_paged_tei_seadragon_
     )
   );
   drupal_add_css("$viewer_module_path/css/viewer.css");
+  drupal_add_js("$viewer_module_path/js/tei_toggle.js");
 }
