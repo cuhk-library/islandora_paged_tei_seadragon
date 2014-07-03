@@ -16,9 +16,9 @@
  *   The string of the transformed TEI.
  */
 function islandora_paged_tei_seadragon_do_transform(AbstractObject $manuscript, AbstractObject $transform) {
-  $tei_dom = new DOMDocument;
-  $xsl_dom = new DOMDocument;
-  $xsl_processor = new XSLTProcessor;
+  $tei_dom = new DOMDocument();
+  $xsl_dom = new DOMDocument();
+  $xsl_processor = new XSLTProcessor();
 
   $tei_dom->loadXML($manuscript['TEI']->content);
   $xsl_dom->loadXML($transform['XSLT']->content);

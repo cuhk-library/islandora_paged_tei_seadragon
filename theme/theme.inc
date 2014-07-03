@@ -22,7 +22,21 @@ function islandora_paged_tei_seadragon_preprocess_islandora_paged_tei_seadragon_
   }
   $token = islandora_get_object_token($page_pid, 'JP2', 2);
 
-  $variables['pager'] = 'pager';
+  // Not using a render array because it was adding impeding divs.
+  $options = array();
+  foreach ($variables['pages'] as $pid => $page_info) {
+    $options[$pid] = isset($page_info['label']) ? $page_info['label'] : $pid;
+  }
+  $pager_variables = array(
+    '#options' => $options,
+    '#attributes' => array('id' => array('islandora_paged_tei_seadragon_pager')),
+    '#value' => $page_pid,
+  );
+  $variables['pager'] = '<strong>' . t('Image') . ': </strong>' . t('!page_selector of @total', array(
+    '!page_selector' => theme('select', array('element' => $pager_variables)),
+    '@total' => count($variables['pages']),
+  ));
+
   $variables['clipper'] = theme(
     'islandora_openseadragon_clipper',
     array('pid' => $page_pid)
@@ -40,4 +54,5 @@ function islandora_paged_tei_seadragon_preprocess_islandora_paged_tei_seadragon_
   );
   drupal_add_css("$viewer_module_path/css/viewer.css");
   drupal_add_js("$viewer_module_path/js/tei_toggle.js");
+  drupal_add_js("$viewer_module_path/js/update_page.js");
 }
