@@ -23,7 +23,10 @@ function islandora_paged_tei_seadragon_preprocess_islandora_paged_tei_seadragon_
   $token = islandora_get_object_token($page_pid, 'JP2', 2);
 
   $variables['pager'] = 'pager';
-  $variables['clipper'] = 'clipper';
+  $variables['clipper'] = theme(
+    'islandora_openseadragon_clipper',
+    array('pid' => $page_pid)
+  );
   $variables['tei'] = islandora_paged_tei_seadragon_do_transform($manuscript, $transform);
   $variables['seadragon'] = theme(
     'islandora_openseadragon_viewer',
