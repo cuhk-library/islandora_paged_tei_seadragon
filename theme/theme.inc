@@ -25,7 +25,7 @@ function islandora_paged_tei_seadragon_preprocess_islandora_paged_tei_seadragon_
   // Not using a render array because it was adding impeding divs.
   $options = array();
   foreach ($variables['pages'] as $pid => $page_info) {
-    $options[$pid] = isset($page_info['label']) ? $page_info['label'] : $pid;
+    $options[$pid] = $page_info['page'];
   }
   $pager_variables = array(
     '#options' => $options,
