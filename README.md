@@ -6,6 +6,7 @@ A viewer for paged content with a TEI datastream that uses the OpenSedragon view
 
 ## Troubleshooting/Issues
 
+Users will need Islandora Rest permissions to view objects/datastreams.
 Having problems or solved a problem? Check out the Islandora google groups for a solution.
 
 * [Islandora Group](https://groups.google.com/forum/?hl=en&fromgroups#!forum/islandora)
