@@ -13,6 +13,7 @@ Having problems or solved a problem? Check out the Islandora google groups for a
 
 ## Development
 
+Transforms need to confirm page delimination to the form of `<div data-paged-viewer-page="page_number" >page_content</div>`.
 If you would like to contribute to this module, please check out our helpful [Documentation for Developers](https://github.com/Islandora/islandora/wiki#wiki-documentation-for-developers) info, as well as our [Developers](http://islandora.ca/developers) section on the Islandora.ca site.
 
 ## License
