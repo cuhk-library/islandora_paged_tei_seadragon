@@ -14,9 +14,14 @@ function islandora_paged_tei_seadragon_preprocess_islandora_paged_tei_seadragon_
   $manuscript = $variables['object'];
   $transform = $variables['transform_object'];
   if (isset($_GET['islandora_paged_content_page'])) {
-    $page_pid = $pages[$_GET['islandora_paged_content_page']]['PID'];
+    foreach($variables['pages'] as $page_info) {
+      if($page_info['page'] == $_GET['islandora_paged_content_page']) {
+        $page_pid = $page_info['pid'];
+        break;
+      }
+    }
   }
-  else {
+  if (!isset($page_pid)) {
     $page_entry = reset($variables['pages']);
     $page_pid = $page_entry['pid'];
   }

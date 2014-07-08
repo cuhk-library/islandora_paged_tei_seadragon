@@ -27,6 +27,10 @@
                             $("div[data-paged-viewer-page='" + page_number + "']").position().top +
                             $("#paged-tei-seadragon-viewer-tei").scrollTop()
                         );
+                        // @todo preserve query params here.
+                        params = {}
+                        params.islandora_paged_content_page = page_number;
+                        history.pushState({}, '', location.pathname + "?" + $.param(params));
                     }
                 })
             };
