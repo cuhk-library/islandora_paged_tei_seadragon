@@ -58,6 +58,9 @@ function islandora_paged_tei_seadragon_preprocess_islandora_paged_tei_seadragon_
     )
   );
   drupal_add_css("$viewer_module_path/css/viewer.css");
+  if (isset($transform['CSS'])) {
+    drupal_add_css($transform['CSS']->content, array('type' => 'inline'));
+  }
   drupal_add_js("$viewer_module_path/js/tei_toggle.js");
   drupal_add_js("$viewer_module_path/js/update_page.js");
 }
