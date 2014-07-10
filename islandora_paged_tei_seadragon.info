@@ -1,0 +1,8 @@
+name = "Islandora Paged Content TEI OpenSeadragon"
+description = "A viewer for paged content with a TEI datastream that uses the OpenSedragon viewer."
+dependencies[] = islandora_openseadragon
+dependencies[] = islandora_rest
+package = Islandora Viewers
+version = 7.x-dev
+core = 7.x
+php = 5.3
