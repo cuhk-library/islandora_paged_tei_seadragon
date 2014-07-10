@@ -7,7 +7,9 @@
 <div class="paged-tei-seadragon-viewer-pane" id="paged-tei-seadragon-viewer-tei-pane">
   <div>
     <div class="left-toolbar">
-      <button type="button" id="paged-tei-seadragon-viewer-tei-toggle">Toggle TEI</button>
+      <?php if (isset($seadragon)): ?>
+        <button type="button" id="paged-tei-seadragon-viewer-tei-toggle">Toggle TEI</button>
+      <?php endif; ?>
     </div>
   </div>
   <div id="paged-tei-seadragon-viewer-tei">
@@ -17,13 +19,13 @@
 <div class="paged-tei-seadragon-viewer-pane" id="paged-tei-seadragon-viewer-seadragon-pane">
   <div>
     <div class="paged-tei-seadragon-viewer-left-toolbar">
-      <?php print $pager;?>
+      <?php print isset($pager) ? $pager : '';?>
     </div>
     <div class="paged-tei-seadragon-viewer-right-toolbar">
-      <?php print $clipper;?>
+      <?php print isset($clipper) ? $clipper : '';?>
     </div>
   </div>
   <div id="paged-tei-seadragon-viewer-seadragon">
-    <?php print $seadragon;?>
+    <?php print isset($seadragon) ? $seadragon : '';?>
   </div>
 </div>

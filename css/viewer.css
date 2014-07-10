@@ -15,6 +15,7 @@
 #paged-tei-seadragon-viewer-tei {
   overflow: scroll;
   position: relative;
+  max-height: 1000px;
 }
 .paged-tei-seadragon-viewer-left-toolbar,
 .paged-tei-seadragon-viewer-right-toolbar {
