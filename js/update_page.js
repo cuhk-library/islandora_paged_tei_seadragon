@@ -6,7 +6,7 @@
             Drupal.settings.islandora_paged_tei_seadragon_update_page = function (pid, page_number) {
                 $.ajax({
                     url: Drupal.settings.basePath + "islandora/rest/v1/object/"
-                        + pid + "/datastream/JP2/token",
+                        + pid + "/datastream/JP2/token?" + $.param({"uses": 2}),
                     cache: false,
                     success: function(token) {
                         // Update seadragon.
