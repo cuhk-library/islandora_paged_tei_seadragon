@@ -3,6 +3,8 @@
         attach: function (context, settings) {
             // TEI pane's width can't be set via CSS.
             $("#paged-tei-seadragon-viewer-tei").height($(".openseadragon-canvas").height());
+
+            // Function for handling page changes.
             Drupal.settings.islandora_paged_tei_seadragon_update_page = function (pid, page_number) {
                 $.ajax({
                     url: Drupal.settings.basePath + "islandora/rest/v1/object/"
@@ -27,13 +29,17 @@
                             $("div[data-paged-viewer-page='" + page_number + "']").position().top +
                             $("#paged-tei-seadragon-viewer-tei").scrollTop()
                         );
+                        // Update current URL.
                         // @todo preserve query params here.
                         var params = {}
                         params.islandora_paged_content_page = page_number;
                         history.pushState({}, '', location.pathname + "?" + $.param(params));
+                        // Swap out datastream download links.
                     }
                 })
             };
+
+            // Bind page changes to the select.
             $("#islandora_paged_tei_seadragon_pager").change(function () {
                 Drupal.settings.islandora_paged_tei_seadragon_update_page(
                     $(this).val(),

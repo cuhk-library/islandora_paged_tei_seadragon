@@ -29,3 +29,6 @@
     <?php print isset($seadragon) ? $seadragon : '';?>
   </div>
 </div>
+<div class="paged-tei-seadragon-viewer-download-datastreams">
+  <?php print isset($datastreams) ? $datastreams : '';?>
+</div>

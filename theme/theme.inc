@@ -10,6 +10,8 @@
 function islandora_paged_tei_seadragon_preprocess_islandora_paged_tei_seadragon_viewer(array &$variables) {
   module_load_include('inc', 'islandora_paged_tei_seadragon', 'includes/utilities');
   module_load_include('inc', 'islandora', 'includes/authtokens');
+  module_load_include('inc', 'islandora', 'includes/datastream');
+
   $viewer_module_path = drupal_get_path('module', 'islandora_paged_tei_seadragon');
   $manuscript = $variables['object'];
   $transform = $variables['transform_object'];
@@ -46,10 +48,36 @@ function islandora_paged_tei_seadragon_preprocess_islandora_paged_tei_seadragon_
       '@total' => count($variables['pages']),
     ));
 
+    $dsids_to_render = array('PDF', 'JP2', 'TIFF');
+    $download_prefix = t('<strong>Download: </strong>');
+    drupal_add_js(
+      array(
+        'islandora_paged_tei_seadragon' => array(
+          'page_dsids' => $dsids_to_render,
+          'download_prefix' => $download_prefix,
+        ),
+      ),
+      'setting'
+    );
+    $page = islandora_object_load($page_pid);
+    $datastreams = array();
+    foreach ($dsids_to_render as $dsid) {
+      if (isset($page[$dsid]) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $page[$dsid])) {
+        $size = islandora_datastream_get_human_readable_size($page[$dsid]);
+        $link = l(t("$dsid ($size)"), islandora_datastream_get_url($page[$dsid], 'download'));
+        $datastreams[] = array(
+          '#type' => 'item',
+          '#markup' => "$download_prefix$link",
+        );
+      }
+    }
+    $variables['datastreams'] = drupal_render($datastreams);
+
     $variables['clipper'] = theme(
       'islandora_openseadragon_clipper',
       array('pid' => $page_pid)
     );
+
     $variables['seadragon'] = theme(
       'islandora_openseadragon_viewer',
       array(
@@ -60,6 +88,7 @@ function islandora_paged_tei_seadragon_preprocess_islandora_paged_tei_seadragon_
         'fedora_object' => islandora_object_load($page_pid),
       )
     );
+
     if (isset($transform['CSS'])) {
       drupal_add_css($transform['CSS']->content, array('type' => 'inline'));
     }
