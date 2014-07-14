@@ -50,6 +50,22 @@ function islandora_paged_tei_seadragon_preprocess_islandora_paged_tei_seadragon_
 
     $dsids_to_render = array('PDF', 'JP2', 'TIFF');
     $download_prefix = t('<strong>Download: </strong>');
+    $page = islandora_object_load($page_pid);
+    $datastreams = array();
+    foreach ($dsids_to_render as $key => $dsid) {
+      if (isset($page[$dsid]) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $page[$dsid])) {
+        $size = islandora_datastream_get_human_readable_size($page[$dsid]);
+        $link = l(t("$dsid ($size)"), islandora_datastream_get_url($page[$dsid], 'download'));
+        $datastreams[] = array(
+          '#type' => 'item',
+          '#markup' => "$download_prefix$link",
+        );
+      }
+      else {
+        // Prevents some extra calls from JS, this is a heuristic choice.
+        unset($dsids_to_render[$key]);
+      }
+    }
     drupal_add_js(
       array(
         'islandora_paged_tei_seadragon' => array(
@@ -59,18 +75,6 @@ function islandora_paged_tei_seadragon_preprocess_islandora_paged_tei_seadragon_
       ),
       'setting'
     );
-    $page = islandora_object_load($page_pid);
-    $datastreams = array();
-    foreach ($dsids_to_render as $dsid) {
-      if (isset($page[$dsid]) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $page[$dsid])) {
-        $size = islandora_datastream_get_human_readable_size($page[$dsid]);
-        $link = l(t("$dsid ($size)"), islandora_datastream_get_url($page[$dsid], 'download'));
-        $datastreams[] = array(
-          '#type' => 'item',
-          '#markup' => "$download_prefix$link",
-        );
-      }
-    }
     $variables['datastreams'] = drupal_render($datastreams);
 
     $variables['clipper'] = theme(

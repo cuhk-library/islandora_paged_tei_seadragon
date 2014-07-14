@@ -24,17 +24,63 @@
                         Drupal.settings.islandora_open_seadragon_viewer.open(tile_source);
                         // Updating the PID to keep it consistent, it isn't used.
                         settings.islandoraOpenSeadragon.pid = pid;
-                        // Scroll TEI.
-                        $("#paged-tei-seadragon-viewer-tei").scrollTop(
-                            $("div[data-paged-viewer-page='" + page_number + "']").position().top +
-                            $("#paged-tei-seadragon-viewer-tei").scrollTop()
-                        );
+                        // Scroll TEI silently fails on bad transforms
+                        if ($("div[data-paged-viewer-page='" + page_number + "']").position() != null) {
+                            $("#paged-tei-seadragon-viewer-tei").scrollTop(
+                                $("div[data-paged-viewer-page='" + page_number + "']").position().top +
+                                $("#paged-tei-seadragon-viewer-tei").scrollTop()
+                            );
+                        }
                         // Update current URL.
                         // @todo preserve query params here.
-                        var params = {}
+                        var params = {};
                         params.islandora_paged_content_page = page_number;
-                        history.pushState({}, '', location.pathname + "?" + $.param(params));
+                        history.pushState({}, "", location.pathname + "?" + $.param(params));
                         // Swap out datastream download links.
+                        $(".paged-tei-seadragon-viewer-download-datastreams").empty();
+                        var iteration;
+                        var page_dsids = Drupal.settings.islandora_paged_tei_seadragon.page_dsids;
+                        for (iteration = 0; iteration < page_dsids.length; ++iteration) {
+                            var dsid = page_dsids[iteration];
+                            $.ajax({
+                                url: Drupal.settings.basePath + "islandora/rest/v1/object/"
+                                    + pid + "/datastream/" + dsid + "?" + $.param({"content": "FALSE"}),
+                                cache: false,
+                                success: function(datastream_info) {
+                                    var kilobyte = 1024;
+                                    var megabyte = kilobyte * 1024;
+                                    var gigabyte = megabyte * 1024;
+                                    var terabyte = gigabyte * 1024;
+                                    var bytes = datastream_info.size;
+                                    var size = 0;
+
+                                    // Round is less precise than Islandora's PHP side.
+                                    if ((bytes >= 0) && (bytes < kilobyte)) {
+                                        size = bytes + ' B';
+                                    }
+                                    else if ((bytes >= kilobyte) && (bytes < megabyte)) {
+                                        size = Math.round(bytes / kilobyte) + ' KiB';
+                                    }
+                                    else if ((bytes >= megabyte) && (bytes < gigabyte)) {
+                                        size = Math.round(bytes / megabyte) + ' MiB';
+                                    }
+                                    else if ((bytes >= gigabyte) && (bytes < terabyte)) {
+                                        size = Math.round(bytes / gigabyte) + ' GiB';
+                                    }
+                                    else if (bytes >= terabyte) {
+                                        size = Math.round(bytes / terabyte) + ' TiB';
+                                    }
+                                    else {
+                                        size = bytes + ' B';
+                                    }
+                                    download = "<div>" + Drupal.settings.islandora_paged_tei_seadragon.download_prefix
+                                        + "<a href=" + Drupal.settings.basePath + "islandora/object/"
+                                    + pid + "/datastream/" + dsid + "/download" + ">" + datastream_info.dsid + " (" + size + ")" + "</a></div>";
+                                    $(".paged-tei-seadragon-viewer-download-datastreams").append(download);
+                                }
+                            });
+                        }
+
                     }
                 })
             };
