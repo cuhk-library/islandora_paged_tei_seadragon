@@ -3,14 +3,30 @@
         attach: function (context, settings) {
             // TEI pane's width can't be set via CSS.
             $("#paged-tei-seadragon-viewer-tei").height($(".openseadragon-canvas").height());
-
             // Function for handling page changes.
             Drupal.settings.islandora_paged_tei_seadragon_update_page = function (pid, page_number) {
+                // Drop out here if we are the most current request.
+                if (pid == Drupal.settings.islandora_paged_tei_seadragon.current_page) {
+                    return;
+                }
+                // Update current URL.
+                // @todo preserve query params here.
+                var params = {};
+                params.islandora_paged_content_page = page_number;
+                history.pushState({}, "", location.pathname + "?" + $.param(params));
+                // Update current page to prevent race conditions.
+                Drupal.settings.islandora_paged_tei_seadragon.current_page = pid;
+
+                // Update page rendering.
                 $.ajax({
                     url: Drupal.settings.basePath + "islandora/rest/v1/object/"
                         + pid + "/datastream/JP2/token?" + $.param({"uses": 2}),
                     cache: false,
                     success: function(token) {
+                        // Drop out here if we are not the most current request.
+                        if (pid != Drupal.settings.islandora_paged_tei_seadragon.current_page) {
+                            return;
+                        }
                         // Update seadragon.
                         settings.islandoraOpenSeadragon.resourceUri =
                             location.protocol + "//" + location.host + "/" +
@@ -31,11 +47,7 @@
                                 $("#paged-tei-seadragon-viewer-tei").scrollTop()
                             );
                         }
-                        // Update current URL.
-                        // @todo preserve query params here.
-                        var params = {};
-                        params.islandora_paged_content_page = page_number;
-                        history.pushState({}, "", location.pathname + "?" + $.param(params));
+
                         // Swap out datastream download links.
                         $(".paged-tei-seadragon-viewer-download-datastreams").empty();
                         var iteration;
@@ -47,6 +59,10 @@
                                     + pid + "/datastream/" + dsid + "?" + $.param({"content": "FALSE"}),
                                 cache: false,
                                 success: function(datastream_info) {
+                                    // Drop out here if we are not the most current request.
+                                    if (pid != Drupal.settings.islandora_paged_tei_seadragon.current_page) {
+                                        return;
+                                    }
                                     var kilobyte = 1024;
                                     var megabyte = kilobyte * 1024;
                                     var gigabyte = megabyte * 1024;
