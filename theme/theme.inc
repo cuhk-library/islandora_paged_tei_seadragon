@@ -43,7 +43,7 @@ function islandora_paged_tei_seadragon_preprocess_islandora_paged_tei_seadragon_
       '#attributes' => array('id' => array('islandora_paged_tei_seadragon_pager')),
       '#value' => $page_pid,
     );
-    $variables['pager'] = '<strong>' . t('Image') . ': </strong>' . t('!page_selector of @total', array(
+    $variables['pager'] = '<strong>' . t('Page:') . ' </strong>' . t('!page_selector of @total', array(
       '!page_selector' => theme('select', array('element' => $pager_variables)),
       '@total' => count($variables['pages']),
     ));
