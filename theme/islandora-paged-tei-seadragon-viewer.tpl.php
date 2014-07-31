@@ -6,18 +6,18 @@
 ?>
 <?php if ($tei_pages_populated): ?>
   <?php if ($tei): ?>
-  <div class="paged-tei-seadragon-viewer-pane" id="paged-tei-seadragon-viewer-tei-pane">
-    <div>
-      <div class="left-toolbar">
-        <?php if (isset($seadragon)): ?>
-          <button type="button" id="paged-tei-seadragon-viewer-tei-toggle">Toggle TEI</button>
-        <?php endif; ?>
+    <div class="paged-tei-seadragon-viewer-pane" id="paged-tei-seadragon-viewer-tei-pane">
+      <div>
+        <div class="left-toolbar">
+          <?php if (isset($seadragon)): ?>
+            <button type="button" id="paged-tei-seadragon-viewer-tei-toggle">Toggle TEI</button>
+          <?php endif; ?>
+        </div>
+      </div>
+      <div id="paged-tei-seadragon-viewer-tei">
+        <?php print $tei;?>
       </div>
     </div>
-    <div id="paged-tei-seadragon-viewer-tei">
-      <?php print $tei;?>
-    </div>
-  </div>
   <?php endif; ?>
   <div class="paged-tei-seadragon-viewer-pane" id="paged-tei-seadragon-viewer-seadragon-pane">
     <div>

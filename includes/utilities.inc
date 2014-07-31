@@ -12,8 +12,8 @@
  * @param AbstractObject $transform
  *   The object contianing the transform.
  *
- * @return string
- *   The string of the transformed TEI.
+ * @return string|bool
+ *   The string of the transformed TEI, FALSE if it does not exist.
  */
 function islandora_paged_tei_seadragon_do_transform(AbstractObject $manuscript, AbstractObject $transform) {
   $tei_dom = new DOMDocument();
