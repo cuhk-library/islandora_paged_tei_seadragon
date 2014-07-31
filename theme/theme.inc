@@ -12,6 +12,7 @@ function islandora_paged_tei_seadragon_preprocess_islandora_paged_tei_seadragon_
   module_load_include('inc', 'islandora', 'includes/authtokens');
   module_load_include('inc', 'islandora', 'includes/datastream');
 
+  $variables['tei_pages_populated'] = TRUE;
   $viewer_module_path = drupal_get_path('module', 'islandora_paged_tei_seadragon');
   $manuscript = $variables['object'];
   $transform = $variables['transform_object'];
@@ -55,7 +56,7 @@ function islandora_paged_tei_seadragon_preprocess_islandora_paged_tei_seadragon_
     foreach ($dsids_to_render as $key => $dsid) {
       if (isset($page[$dsid]) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $page[$dsid])) {
         $size = islandora_datastream_get_human_readable_size($page[$dsid]);
-        $link = l(t("$dsid ($size)"), islandora_datastream_get_url($page[$dsid], 'download'));
+        $link = l(t("@dsid (@size)", array('@dsid' => $dsid, '@size' => $size)), islandora_datastream_get_url($page[$dsid], 'download'));
         $datastreams[] = array(
           '#type' => 'item',
           '#markup' => "$download_prefix$link",
@@ -71,6 +72,9 @@ function islandora_paged_tei_seadragon_preprocess_islandora_paged_tei_seadragon_
         'islandora_paged_tei_seadragon' => array(
           'page_dsids' => $dsids_to_render,
           'download_prefix' => $download_prefix,
+        ),
+        'islandora_paged_tei_tei' => array(
+          'populated_tei' => $variables['tei'],
         ),
       ),
       'setting'
@@ -97,6 +101,14 @@ function islandora_paged_tei_seadragon_preprocess_islandora_paged_tei_seadragon_
       drupal_add_css($transform['CSS']->content, array('type' => 'inline'));
     }
     drupal_add_js("$viewer_module_path/js/update_page.js");
-    drupal_add_js("$viewer_module_path/js/tei_toggle.js");
+
+    if ($variables['tei']) {
+      drupal_add_js("$viewer_module_path/js/tei_toggle.js");
+    }
+  }
+
+  // Set if we have populated pages and TEI.
+  if (!$variables['tei'] && !$page_pid) {
+    $variables['tei_pages_populated'] = FALSE;
   }
 }
