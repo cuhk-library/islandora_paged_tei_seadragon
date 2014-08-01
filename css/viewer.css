@@ -12,6 +12,9 @@
 #paged-tei-seadragon-viewer-tei-pane {
   max-width: 49%;
 }
+#paged-tei-seadragon-viewer-tei-pane-full {
+    max-width: 100%;
+}
 #paged-tei-seadragon-viewer-tei {
   overflow: scroll;
   position: relative;

@@ -6,7 +6,7 @@
 ?>
 <?php if ($tei_pages_populated): ?>
   <?php if ($tei): ?>
-    <div class="paged-tei-seadragon-viewer-pane" id="paged-tei-seadragon-viewer-tei-pane">
+    <div class="paged-tei-seadragon-viewer-pane" id="paged-tei-seadragon-viewer-tei-pane<?php print $tei_pane_class; ?>">
       <div>
         <div class="left-toolbar">
           <?php if (isset($seadragon)): ?>

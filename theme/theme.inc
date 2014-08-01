@@ -111,4 +111,5 @@ function islandora_paged_tei_seadragon_preprocess_islandora_paged_tei_seadragon_
   if (!$variables['tei'] && !$page_pid) {
     $variables['tei_pages_populated'] = FALSE;
   }
+  $variables['tei_pane_class'] = $page_pid ? '' : '-full';
 }
