@@ -1,8 +1,13 @@
 (function ($) {
     Drupal.behaviors.islandora_paged_tei_seadragon_update_page = {
         attach: function (context, settings) {
-            // TEI pane's width can't be set via CSS.
+            // TEI pane's height can't be set via CSS.
             $("#paged-tei-seadragon-viewer-tei").height($(".openseadragon-canvas").height());
+            // If there's no TEI populated want the viewer to take up the
+            // whole page.
+            if (!Drupal.settings.islandora_paged_tei_tei.populated_tei) {
+                $("#paged-tei-seadragon-viewer-seadragon-pane").width("100%");
+            }
             // Function for handling page changes.
             Drupal.settings.islandora_paged_tei_seadragon_update_page = function (pid, page_number) {
                 // Drop out here if we are the most current request.
@@ -91,7 +96,7 @@
                                     }
                                     download = "<div>" + Drupal.settings.islandora_paged_tei_seadragon.download_prefix
                                         + "<a href=" + Drupal.settings.basePath + "islandora/object/"
-                                    + pid + "/datastream/" + dsid + "/download" + ">" + datastream_info.dsid + " (" + size + ")" + "</a></div>";
+                                    + pid + "/datastream/" + datastream_info.dsid + "/download" + ">" + datastream_info.dsid + " (" + size + ")" + "</a></div>";
                                     $(".paged-tei-seadragon-viewer-download-datastreams").append(download);
                                 }
                             });
