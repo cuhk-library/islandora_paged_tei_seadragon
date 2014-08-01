@@ -12,6 +12,7 @@ function islandora_paged_tei_seadragon_preprocess_islandora_paged_tei_seadragon_
   module_load_include('inc', 'islandora', 'includes/authtokens');
   module_load_include('inc', 'islandora', 'includes/datastream');
 
+  $variables['tei_pages_populated'] = TRUE;
   $viewer_module_path = drupal_get_path('module', 'islandora_paged_tei_seadragon');
   $manuscript = $variables['object'];
   $transform = $variables['transform_object'];
@@ -73,6 +74,9 @@ function islandora_paged_tei_seadragon_preprocess_islandora_paged_tei_seadragon_
           'page_dsids' => $dsids_to_render,
           'download_prefix' => $download_prefix,
         ),
+        'islandora_paged_tei_tei' => array(
+          'populated_tei' => $variables['tei'],
+        ),
       ),
       'setting'
     );
@@ -98,6 +102,14 @@ function islandora_paged_tei_seadragon_preprocess_islandora_paged_tei_seadragon_
       drupal_add_css($transform['CSS']->content, array('type' => 'inline'));
     }
     drupal_add_js("$viewer_module_path/js/update_page.js");
-    drupal_add_js("$viewer_module_path/js/tei_toggle.js");
+
+    if ($variables['tei']) {
+      drupal_add_js("$viewer_module_path/js/tei_toggle.js");
+    }
+  }
+
+  // Set if we have populated pages and TEI.
+  if (!$variables['tei'] && !$page_pid) {
+    $variables['tei_pages_populated'] = FALSE;
   }
 }
