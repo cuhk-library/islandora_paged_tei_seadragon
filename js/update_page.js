@@ -54,11 +54,11 @@
                         }
 
                         // Swap out datastream download links.
-                        $(".paged-tei-seadragon-viewer-download-datastreams").empty();
                         var iteration;
                         var page_dsids = Drupal.settings.islandora_paged_tei_seadragon.page_dsids;
                         for (iteration = 0; iteration < page_dsids.length; ++iteration) {
                             var dsid = page_dsids[iteration];
+                            $("#paged-tei-seadragon-viewer-download-datastream-" + dsid).empty();
                             $.ajax({
                                 url: Drupal.settings.basePath + "islandora/rest/v1/object/"
                                     + pid + "/datastream/" + dsid + "?" + $.param({"content": "FALSE"}),
@@ -97,7 +97,7 @@
                                     download = "<div>" + Drupal.settings.islandora_paged_tei_seadragon.download_prefix
                                         + "<a href=" + Drupal.settings.basePath + "islandora/object/"
                                     + pid + "/datastream/" + datastream_info.dsid + "/download" + ">" + datastream_info.dsid + " (" + size + ")" + "</a></div>";
-                                    $(".paged-tei-seadragon-viewer-download-datastreams").append(download);
+                                    $("#paged-tei-seadragon-viewer-download-datastream-" + datastream_info.dsid).html(download);
                                 }
                             });
                         }
