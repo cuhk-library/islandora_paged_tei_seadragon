@@ -55,10 +55,11 @@ function islandora_paged_tei_seadragon_preprocess_islandora_paged_tei_seadragon_
     foreach ($dsids_to_render as $key => $dsid) {
       if (isset($page[$dsid]) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $page[$dsid])) {
         $size = islandora_datastream_get_human_readable_size($page[$dsid]);
-        $link = l(t("$dsid ($size)"), islandora_datastream_get_url($page[$dsid], 'download'));
-        $datastreams[] = array(
-          '#type' => 'item',
+        $link = l(t("@dsid (@size)", array('@dsid' => $dsid, '@size' => $size)), islandora_datastream_get_url($page[$dsid], 'download'));
+        $datastreams[$dsid] = array(
           '#markup' => "$download_prefix$link",
+          '#prefix' => '<div id="paged-tei-seadragon-viewer-download-datastream-' . $dsid . '">',
+          '#suffix' => '</div>',
         );
       }
       else {
