@@ -12,13 +12,13 @@ function islandora_paged_tei_seadragon_islandora_viewer_info() {
   return array(
     'islandora_paged_tei_seadragon' => array(
       'label' => t('Paged Content TEI OpenSeadragon viewer'),
-      'description' => t('Two pained viewer with rendered TEI on one side and
+      'description' => t('Two paned viewer with rendered TEI on one side and
         page images on the other.'),
       'callback' => 'islandora_paged_tei_seadragon_callback',
       'model' => array(
         'islandora:manuscriptCModel',
         'islandora:bookCModel',
-        'islandora:issueCModel',
+        'islandora:newspaperCModel',
       ),
     ),
   );
