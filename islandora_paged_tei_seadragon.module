@@ -17,6 +17,8 @@ function islandora_paged_tei_seadragon_islandora_viewer_info() {
       'callback' => 'islandora_paged_tei_seadragon_callback',
       'model' => array(
         'islandora:manuscriptCModel',
+        'islandora:bookCModel',
+        'islandora:issueCModel',
       ),
     ),
   );
