@@ -12,7 +12,7 @@ function template_preprocess_islandora_paged_tei_seadragon_viewer(array &$variab
   module_load_include('inc', 'islandora', 'includes/authtokens');
   module_load_include('inc', 'islandora', 'includes/datastream');
 
-  $variables['left_pane_populated'] = TRUE;
+  $variables['pages_populated'] = TRUE;
   $variables['left_pane'] = FALSE;
   $variables['page_pid'] = FALSE;
   $viewer_module_path = drupal_get_path('module', 'islandora_paged_tei_seadragon');
@@ -33,6 +33,8 @@ function template_preprocess_islandora_paged_tei_seadragon_viewer(array &$variab
   }
 
   drupal_add_css("$viewer_module_path/css/viewer.css");
+  // Only want to display TEI in the event that a associated transform is
+  // present.
   if ($transform) {
     $tei = islandora_paged_tei_seadragon_do_transform($manuscript, $transform);
   }
@@ -122,7 +124,7 @@ function template_preprocess_islandora_paged_tei_seadragon_viewer(array &$variab
 
   // Set if we have populated pages and TEI.
   if (!$tei && !$page_pid) {
-    $variables['left_pane_populated'] = FALSE;
+    $variables['pages_populated'] = FALSE;
   }
   if ($tei) {
     $variables['left_pane'] = $tei;

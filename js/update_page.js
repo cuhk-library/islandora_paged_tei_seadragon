@@ -5,7 +5,7 @@
             $("#paged-tei-seadragon-viewer-tei").height($(".openseadragon-canvas").height());
             // If there's no TEI populated want the viewer to take up the
             // whole page.
-            if (!Drupal.settings.islandora_paged_tei_tei.populated_tei) {
+            if (!(typeof Drupal.settings.islandora_paged_tei_tei !== 'undefined' && typeof Drupal.settings.islandora_paged_tei_tei.populated_tei !== 'undefined' && !Drupal.settings.islandora_paged_tei_tei.populated_tei)) {
                 $("#paged-tei-seadragon-viewer-seadragon-pane").width("100%");
             }
             // Function for handling page changes.
