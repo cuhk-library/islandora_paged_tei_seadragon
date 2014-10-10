@@ -4,18 +4,18 @@
  * Template file for the paged TEI seadragon viewer.
  */
 ?>
-<?php if ($tei_pages_populated): ?>
-  <?php if ($tei): ?>
+<?php if ($pages_populated): ?>
+  <?php if ($left_pane): ?>
     <div class="paged-tei-seadragon-viewer-pane" id="paged-tei-seadragon-viewer-tei-pane<?php print $tei_pane_class; ?>">
       <div>
         <div class="left-toolbar">
           <?php if (isset($seadragon)): ?>
-            <button type="button" id="paged-tei-seadragon-viewer-tei-toggle">Toggle TEI</button>
+            <button type="button" id="paged-tei-seadragon-viewer-tei-toggle"><?php print $button_label; ?></button>
           <?php endif; ?>
         </div>
       </div>
       <div id="paged-tei-seadragon-viewer-tei">
-        <?php print $tei;?>
+        <?php print $left_pane;?>
       </div>
     </div>
   <?php endif; ?>

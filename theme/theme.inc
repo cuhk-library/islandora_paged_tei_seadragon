@@ -7,15 +7,18 @@
 /**
  * Implements hook_preprocess_theme().
  */
-function islandora_paged_tei_seadragon_preprocess_islandora_paged_tei_seadragon_viewer(array &$variables) {
+function template_preprocess_islandora_paged_tei_seadragon_viewer(array &$variables) {
   module_load_include('inc', 'islandora_paged_tei_seadragon', 'includes/utilities');
   module_load_include('inc', 'islandora', 'includes/authtokens');
   module_load_include('inc', 'islandora', 'includes/datastream');
 
-  $variables['tei_pages_populated'] = TRUE;
+  $variables['pages_populated'] = TRUE;
+  $variables['left_pane'] = FALSE;
+  $variables['page_pid'] = FALSE;
   $viewer_module_path = drupal_get_path('module', 'islandora_paged_tei_seadragon');
   $manuscript = $variables['object'];
   $transform = $variables['transform_object'];
+  $tei = FALSE;
   if (isset($_GET['islandora_paged_content_page'])) {
     foreach ($variables['pages'] as $page_info) {
       if ($page_info['page'] == $_GET['islandora_paged_content_page']) {
@@ -30,7 +33,11 @@ function islandora_paged_tei_seadragon_preprocess_islandora_paged_tei_seadragon_
   }
 
   drupal_add_css("$viewer_module_path/css/viewer.css");
-  $variables['tei'] = islandora_paged_tei_seadragon_do_transform($manuscript, $transform);
+  // Only want to display TEI in the event that a associated transform is
+  // present.
+  if ($transform) {
+    $tei = islandora_paged_tei_seadragon_do_transform($manuscript, $transform);
+  }
   if ($page_pid) {
     $token = islandora_get_object_token($page_pid, 'JP2', 2);
 
@@ -74,12 +81,19 @@ function islandora_paged_tei_seadragon_preprocess_islandora_paged_tei_seadragon_
           'page_dsids' => $dsids_to_render,
           'download_prefix' => $download_prefix,
         ),
-        'islandora_paged_tei_tei' => array(
-          'populated_tei' => $variables['tei'],
-        ),
       ),
       'setting'
     );
+    if ($tei) {
+      drupal_add_js(
+        array(
+          'islandora_paged_tei_tei' => array(
+            'populated_tei' => $tei,
+          ),
+        ),
+        'setting'
+      );
+    }
     $variables['datastreams'] = drupal_render($datastreams);
 
     $variables['clipper'] = theme(
@@ -103,14 +117,18 @@ function islandora_paged_tei_seadragon_preprocess_islandora_paged_tei_seadragon_
     }
     drupal_add_js("$viewer_module_path/js/update_page.js");
 
-    if ($variables['tei']) {
-      drupal_add_js("$viewer_module_path/js/tei_toggle.js");
-    }
+    drupal_add_js("$viewer_module_path/js/tei_toggle.js");
+    $variables['button_label'] = t('Toggle TEI');
+    $variables['page_pid'] = $page_pid;
   }
 
   // Set if we have populated pages and TEI.
-  if (!$variables['tei'] && !$page_pid) {
-    $variables['tei_pages_populated'] = FALSE;
+  if (!$tei && !$page_pid) {
+    $variables['pages_populated'] = FALSE;
   }
+  if ($tei) {
+    $variables['left_pane'] = $tei;
+  }
+  $variables['tei'] = $tei;
   $variables['tei_pane_class'] = $page_pid ? '' : '-full';
 }
