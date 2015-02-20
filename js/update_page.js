@@ -5,8 +5,8 @@
             $("#paged-tei-seadragon-viewer-tei").height($(".openseadragon-canvas").height());
             // If there's no TEI populated want the viewer to take up the
             // whole page.
-	    var tei_defined = Drupal.settings.islandora_paged_tei_tei !== undefined && Drupal.settings.islandora_paged_tei_tei.populated_tei !== undefined;
-	    var tei_populated = tei_defined && Drupal.settings.islandora_paged_tei_tei.populated_tei;
+            var tei_defined = Drupal.settings.islandora_paged_tei_tei !== undefined && Drupal.settings.islandora_paged_tei_tei.populated_tei !== undefined;
+            var tei_populated = tei_defined && Drupal.settings.islandora_paged_tei_tei.populated_tei;
             if (!tei_populated) {
                 $("#paged-tei-seadragon-viewer-seadragon-pane").width("100%");
             }
