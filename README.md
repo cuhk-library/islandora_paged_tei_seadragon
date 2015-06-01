@@ -4,6 +4,11 @@
 
 A viewer for paged content with a TEI datastream that uses the OpenSedragon viewer.
 
+## Requirements
+
+* [Islandora REST](https://github.com/discoverygarden/islandora_rest)
+* [Islandora OpenSeadragon](https://github.com/Islandora/islandora_openseadragon)
+
 ## Troubleshooting/Issues
 
 Users will need Islandora Rest permissions to view objects/datastreams.
