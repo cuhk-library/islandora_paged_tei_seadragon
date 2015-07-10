@@ -116,14 +116,16 @@
                 );
             });
 
-            $("#islandora-paged-tei-seadragon-navigate-left").click(function () {
+            $("#islandora-paged-tei-seadragon-navigate-left").click(function (evt) {
+                evt.preventDefault();
                 var prev_option = $("#islandora_paged_tei_seadragon_pager option:selected").prev();
                 if (prev_option.length) {
                     $("#islandora_paged_tei_seadragon_pager").val(prev_option.val()).trigger('change');
                 }
             });
 
-            $("#islandora-paged-tei-seadragon-navigate-right").click(function () {
+            $("#islandora-paged-tei-seadragon-navigate-right").click(function (evt) {
+               evt.preventDefault();
                var next_option = $("#islandora_paged_tei_seadragon_pager option:selected").next();
                if (next_option.length) {
                    $("#islandora_paged_tei_seadragon_pager").val(next_option.val()).trigger('change');
