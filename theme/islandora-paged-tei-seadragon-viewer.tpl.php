@@ -20,9 +20,11 @@
     </div>
   <?php endif; ?>
   <div class="paged-tei-seadragon-viewer-pane" id="paged-tei-seadragon-viewer-seadragon-pane">
-    <div>
+    <div class="paged-tei-seadragon-viewer-wrapper">
       <div class="paged-tei-seadragon-viewer-left-toolbar">
+        <?php print $nav_left ?>
         <?php print isset($pager) ? $pager : '';?>
+        <?php print $nav_right ?>
       </div>
       <div class="paged-tei-seadragon-viewer-right-toolbar">
         <?php print isset($clipper) ? $clipper : '';?>

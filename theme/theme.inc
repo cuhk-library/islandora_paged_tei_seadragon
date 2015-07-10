@@ -55,7 +55,11 @@ function template_preprocess_islandora_paged_tei_seadragon_viewer(array &$variab
       '!page_selector' => theme('select', array('element' => $pager_variables)),
       '@total' => count($variables['pages']),
     ));
+    $left_src = file_create_url("$viewer_module_path/images/back.png");
+    $right_src = file_create_url("$viewer_module_path/images/next.png");
 
+    $variables['nav_left'] = '<a title="Previous" href="#" id="islandora-paged-tei-seadragon-navigate-left"><img src="' . $left_src . '"></img></a>';
+    $variables['nav_right'] = '<a title="Next" href="#" id="islandora-paged-tei-seadragon-navigate-right"><img src="' . $right_src . '"></img></a>';
     $dsids_to_render = array('PDF', 'JP2', 'TIFF');
     $download_prefix = t('<strong>Download: </strong>');
     $page = islandora_object_load($page_pid);

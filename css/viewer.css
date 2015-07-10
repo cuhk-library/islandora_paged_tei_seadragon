@@ -30,3 +30,17 @@
 .paged-tei-seadragon-viewer-download-datastreams {
   float: right;
 }
+
+#islandora-paged-tei-seadragon-navigate-right > img, #islandora-paged-tei-seadragon-navigate-left > img {
+    vertical-align: middle;
+}
+
+.paged-tei-seadragon-viewer-wrapper {
+    display: table;
+    width: 100%;
+}
+
+.paged-tei-seadragon-viewer-left-toolbar, .paged-tei-seadragon-viewer-right-toolbar {
+    display: table-cell;
+    vertical-align: middle;
+}
