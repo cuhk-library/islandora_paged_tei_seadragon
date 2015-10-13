@@ -50,6 +50,8 @@ function islandora_paged_tei_seadragon_theme() {
         'object' => NULL,
         'transform_object' => NULL,
         'pages' => array(),
+        'nav_left' => '',
+        'nav_right' => '',
       ),
     ),
   );
