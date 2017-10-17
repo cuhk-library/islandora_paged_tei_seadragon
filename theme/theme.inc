@@ -105,16 +105,18 @@ function template_preprocess_islandora_paged_tei_seadragon_viewer(array &$variab
       array('pid' => $page_pid)
     );
 
-    $variables['seadragon'] = theme(
-      'islandora_openseadragon_viewer',
-      array(
-        'uri' => url(
-          "islandora/object/$page_pid/datastream/JP2/view",
-          array('absolute' => TRUE, 'query' => array('token' => $token))
-        ),
-        'fedora_object' => islandora_object_load($page_pid),
-      )
-    );
+    if (islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $page['JP2'])) {
+      module_load_include('inc', 'islandora_openseadragon', 'includes/utilities');
+      $variables['seadragon'] = theme(
+        'islandora_openseadragon_viewer',
+        array(
+          'pid' => $page_pid,
+          'tile_sources' => array(
+            islandora_openseadragon_datastream_tile_source($page['JP2']),
+          ),
+        )
+      );
+    }
 
     if (isset($transform['CSS'])) {
       drupal_add_css($transform['CSS']->content, array('type' => 'inline'));
