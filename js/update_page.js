@@ -35,16 +35,11 @@
                             return;
                         }
                         // Update seadragon.
-                        settings.islandoraOpenSeadragon.resourceUri =
-                            location.protocol + "//" + location.host + "/" +
+                        Drupal.settings.islandora_open_seadragon_viewer.open({
+                          identifier: location.protocol + "//" + location.host + "/" +
                             Drupal.settings.basePath + "islandora/object/" + pid
-                            + "/datastream/JP2/view?token=" + token;
-                        tile_source = new OpenSeadragon.DjatokaTileSource(
-                            settings.islandoraOpenSeadragon.settings.djatokaServerBaseURL,
-                            settings.islandoraOpenSeadragon.resourceUri,
-                            settings.islandoraOpenSeadragon
-                        );
-                        Drupal.settings.islandora_open_seadragon_viewer.open(tile_source);
+                            + "/datastream/JP2/view?token=" + token,
+                        });
                         // Updating the PID to keep it consistent, it isn't used.
                         settings.islandoraOpenSeadragon.pid = pid;
                         // Scroll TEI silently fails on bad transforms
