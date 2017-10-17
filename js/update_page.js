@@ -26,20 +26,16 @@
 
                 // Update page rendering.
                 $.ajax({
-                    url: Drupal.settings.basePath + "islandora/rest/v1/object/"
-                        + pid + "/datastream/JP2/token?" + $.param({"uses": 2}),
+                    url: Drupal.settings.basePath + "islandora/object/"
+                        + pid + "/paged_tei_seadragon_tilesource",
                     cache: false,
-                    success: function(token) {
+                    success: function(data) {
                         // Drop out here if we are not the most current request.
                         if (pid != Drupal.settings.islandora_paged_tei_seadragon.current_page) {
                             return;
                         }
                         // Update seadragon.
-                        Drupal.settings.islandora_open_seadragon_viewer.open({
-                          identifier: location.protocol + "//" + location.host + "/" +
-                            Drupal.settings.basePath + "islandora/object/" + pid
-                            + "/datastream/JP2/view?token=" + token,
-                        });
+                        Drupal.settings.islandora_open_seadragon_viewer.open(data.info);
                         // Updating the PID to keep it consistent, it isn't used.
                         settings.islandoraOpenSeadragon.pid = pid;
                         // Scroll TEI silently fails on bad transforms

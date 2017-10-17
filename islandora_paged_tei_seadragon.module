@@ -52,7 +52,33 @@ function islandora_paged_tei_seadragon_theme() {
         'pages' => array(),
         'nav_left' => '',
         'nav_right' => '',
+        'seadragon' => '',
       ),
     ),
   );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function islandora_paged_tei_seadragon_menu() {
+  $item = array();
+
+  $item['islandora/object/%islandora_object/paged_tei_seadragon_tilesource'] = array(
+    'title' => 'Paged Seadragon Tilesource Callback',
+    'page callback' => '_islandora_paged_tei_seadragon_tilesource_callback',
+    'page arguments' => array(2),
+    'access callback' => '_islandora_paged_tei_seadragon_tilesource_access_callback',
+    'access arguments' => array(2),
+    'file' => 'includes/callbacks.inc',
+  );
+
+  return $item;
+}
+
+/**
+ * Access callback; can datastream, so can get a tilesource for it.
+ */
+function _islandora_paged_tei_seadragon_tilesource_access_callback($object) {
+  return islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $object['JP2']);
 }
