@@ -112,7 +112,7 @@ function template_preprocess_islandora_paged_tei_seadragon_viewer(array &$variab
         array(
           'pid' => $page_pid,
           'tile_sources' => array(
-            islandora_openseadragon_datastream_tile_source($page['JP2']),
+            islandora_openseadragon_tile_source($page->id, 'JP2', $token),
           ),
         )
       );
