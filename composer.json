@@ -1,0 +1,5 @@
+{
+  "name": "discoverygarden/islandora_paged_tei_seadragon",
+  "description": "Islandora Paged TEI Seadragon Viewer",
+  "type": "drupal-module"
+}
