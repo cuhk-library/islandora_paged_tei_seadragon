@@ -1,11 +1,12 @@
 <?php
+
 /**
  * @file
  * Theme functions for islandora_paged_tei_seadragon.
  */
 
 /**
- * Implements hook_preprocess_theme().
+ * Implements template_preprocess_islandora_paged_tei_seadragon_viewer().
  */
 function template_preprocess_islandora_paged_tei_seadragon_viewer(array &$variables) {
   module_load_include('inc', 'islandora_paged_tei_seadragon', 'includes/utilities');
@@ -18,7 +19,7 @@ function template_preprocess_islandora_paged_tei_seadragon_viewer(array &$variab
   $viewer_module_path = drupal_get_path('module', 'islandora_paged_tei_seadragon');
   $manuscript = $variables['object'];
   $transform = $variables['transform_object'];
-  $tei = FALSE;
+  $tei = $variables['tei'];
   if (isset($_GET['islandora_paged_content_page'])) {
     foreach ($variables['pages'] as $page_info) {
       if ($page_info['page'] == $_GET['islandora_paged_content_page']) {
@@ -32,7 +33,6 @@ function template_preprocess_islandora_paged_tei_seadragon_viewer(array &$variab
     $page_pid = $page_entry['pid'];
   }
 
-  drupal_add_css("$viewer_module_path/css/viewer.css");
   // Only want to display TEI in the event that a associated transform is
   // present.
   if ($transform) {
@@ -60,45 +60,26 @@ function template_preprocess_islandora_paged_tei_seadragon_viewer(array &$variab
 
     $variables['nav_left'] = '<a title="Previous" href="#" id="islandora-paged-tei-seadragon-navigate-left"><img src="' . $left_src . '"></img></a>';
     $variables['nav_right'] = '<a title="Next" href="#" id="islandora-paged-tei-seadragon-navigate-right"><img src="' . $right_src . '"></img></a>';
-    $dsids_to_render = array('PDF', 'JP2', 'TIFF');
-    $download_prefix = t('<strong>Download: </strong>');
+    $variables['download_prefix'] = t('<strong>Download: </strong>');
     $page = islandora_object_load($page_pid);
     $datastreams = array();
-    foreach ($dsids_to_render as $key => $dsid) {
+    foreach ($variables['dsids_to_render'] as $key => $dsid) {
       if (isset($page[$dsid]) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $page[$dsid])) {
         $size = islandora_datastream_get_human_readable_size($page[$dsid]);
         $link = l(t("@dsid (@size)", array('@dsid' => $dsid, '@size' => $size)), islandora_datastream_get_url($page[$dsid], 'download'));
         $datastreams[$dsid] = array(
-          '#markup' => "$download_prefix$link",
+          '#markup' => "{$variables['download_prefix']}$link",
           '#prefix' => '<div id="paged-tei-seadragon-viewer-download-datastream-' . $dsid . '">',
           '#suffix' => '</div>',
         );
       }
       else {
         // Prevents some extra calls from JS, this is a heuristic choice.
-        unset($dsids_to_render[$key]);
+        unset($variables['dsids_to_render'][$key]);
       }
     }
-    drupal_add_js(
-      array(
-        'islandora_paged_tei_seadragon' => array(
-          'page_dsids' => $dsids_to_render,
-          'download_prefix' => $download_prefix,
-        ),
-      ),
-      'setting'
-    );
-    if ($tei) {
-      drupal_add_js(
-        array(
-          'islandora_paged_tei_tei' => array(
-            'populated_tei' => $tei,
-          ),
-        ),
-        'setting'
-      );
-    }
-    $variables['datastreams'] = drupal_render($datastreams);
+
+    $variables['datastreams'] = $datastreams;
 
     $variables['clipper'] = theme(
       'islandora_openseadragon_clipper',
@@ -118,12 +99,6 @@ function template_preprocess_islandora_paged_tei_seadragon_viewer(array &$variab
       );
     }
 
-    if (isset($transform['CSS'])) {
-      drupal_add_css($transform['CSS']->content, array('type' => 'inline'));
-    }
-    drupal_add_js("$viewer_module_path/js/update_page.js");
-
-    drupal_add_js("$viewer_module_path/js/tei_toggle.js");
     $variables['button_label'] = t('Toggle TEI');
     $variables['page_pid'] = $page_pid;
   }
@@ -137,4 +112,39 @@ function template_preprocess_islandora_paged_tei_seadragon_viewer(array &$variab
   }
   $variables['tei'] = $tei;
   $variables['tei_pane_class'] = $page_pid ? '' : '-full';
+}
+
+/**
+ * Implements template_process_islandora_paged_tei_seadragon_viewer().
+ */
+function template_process_islandora_paged_tei_seadragon_viewer(array &$variables) {
+  $viewer_module_path = drupal_get_path('module', 'islandora_paged_tei_seadragon');
+  drupal_add_css("$viewer_module_path/css/viewer.css");
+  if ($variables['page_pid']) {
+    drupal_add_js("$viewer_module_path/js/update_page.js");
+    drupal_add_js("$viewer_module_path/js/tei_toggle.js");
+    if ($variables['transform_object'] && isset($variables['transform_object']['CSS'])) {
+      drupal_add_css($variables['transform_object']['CSS']->content, array('type' => 'inline'));
+    }
+  }
+  drupal_add_js(
+    array(
+      'islandora_paged_tei_seadragon' => array(
+        'page_dsids' => $variables['dsids_to_render'],
+        'download_prefix' => $variables['download_prefix'],
+      ),
+    ),
+    'setting'
+  );
+  if ($variables['tei']) {
+    drupal_add_js(
+      array(
+        'islandora_paged_tei_tei' => array(
+          'populated_tei' => $variables['tei'],
+        ),
+      ),
+      'setting'
+    );
+  }
+  $variables['datastreams'] = drupal_render($variables['datastreams']);
 }
