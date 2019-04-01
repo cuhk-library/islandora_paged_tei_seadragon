@@ -53,6 +53,9 @@ function islandora_paged_tei_seadragon_theme() {
         'nav_left' => '',
         'nav_right' => '',
         'seadragon' => '',
+        'dsids_to_render' => array('PDF', 'JP2', 'TIFF'),
+        'tei' => FALSE,
+        'download_prefix' => '',
       ),
     ),
   );
