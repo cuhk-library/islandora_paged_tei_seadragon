@@ -110,7 +110,7 @@ function template_preprocess_islandora_paged_tei_seadragon_viewer(array &$variab
   if ($tei) {
     $variables['left_pane'] = $tei;
   }
-  $variables['tei'] = $tei;
+  //$variables['tei'] = $tei;
   $variables['tei_pane_class'] = $page_pid ? '' : '-full';
 }
 
