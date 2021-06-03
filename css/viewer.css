@@ -7,7 +7,9 @@
   vertical-align: top;
 }
 #paged-tei-seadragon-viewer-seadragon-pane {
-  width: 49%;
+  /*default hide*/
+  width: 90%;
+  /*width: 49%;*/
 }
 #paged-tei-seadragon-viewer-tei-pane {
   max-width: 49%;
@@ -19,6 +21,8 @@
   overflow: scroll;
   position: relative;
   max-height: 1000px;
+  /*default hide*/
+  display: none;
 }
 .paged-tei-seadragon-viewer-left-toolbar,
 .paged-tei-seadragon-viewer-right-toolbar {
